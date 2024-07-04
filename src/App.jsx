@@ -4,7 +4,7 @@ import Todo from './components/Todo';
 import Form from './components/Form';  
 import FilterButton from './components/FilterButton';
 
-function App() {
+function App(props) {
   console.log('App is called'); 
   const [tasks, setTasks] = useState([]); 
   const taskList = tasks?.map((task) => {
@@ -13,8 +13,20 @@ function App() {
       name={task.name}
       completed={task.completed}
       key={task.id}
+      toggleTaskCompleted={toggleTaskCompleted}
+      deleteTask={deleteTask}
     />
   })
+
+  function toggleTaskCompleted(id) {
+    const updatedTasks = tasks.map((task) => {
+      if(id === task.id) {
+        return {...task, completed: !task.completed}
+      }
+      return task; 
+    })
+    setTasks(updatedTasks); 
+  }
   
   const tasksNoun = taskList.length !== 1 ? "tasks" : "task";
   const headingText = `${taskList.length} ${tasksNoun} remaining`
@@ -23,6 +35,12 @@ function App() {
     const newTask = {id: `todo-${nanoid()}`, name, completed: false}; 
     setTasks([...tasks, newTask]); 
   }
+
+  function deleteTask(id) {
+    const remainingTasks = tasks.filter((task) => id!==task.id); 
+    setTasks(remainingTasks); 
+  }
+
   return (
     <div className="todoapp stack-large">
       <h1 hidden>TodoMatic</h1>
