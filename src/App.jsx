@@ -4,30 +4,25 @@ import Todo from './components/Todo';
 import Form from './components/Form';  
 import FilterButton from './components/FilterButton';
 
-function App(props) {
+function App() {
+  console.log('App is called'); 
   const [tasks, setTasks] = useState([]); 
-  // const taskList = tasks?.map((task) => {
-  //   <Todo
-  //     id={task.id}
-  //     name={task.name}
-  //     completed={task.completed}
-  //     key={task.id}
-  //   />
-  // })
   const taskList = tasks?.map((task) => {
-    <Todo
+    return <Todo
       id={task.id}
       name={task.name}
       completed={task.completed}
       key={task.id}
     />
   })
+  
+  const tasksNoun = taskList.length !== 1 ? "tasks" : "task";
+  const headingText = `${taskList.length} ${tasksNoun} remaining`
 
   function addTask(name) {
-    const newTask = {id: `todo-${nanoid()}`, name, completed: false, key: `todo-${nanoid()}`}; 
+    const newTask = {id: `todo-${nanoid()}`, name, completed: false}; 
     setTasks([...tasks, newTask]); 
   }
-  // const taskList = props.tasks?.map((task) => <Todo id={task.id} name={task.name} completed={task.completed} key={task.id}/>); 
   return (
     <div className="todoapp stack-large">
       <h1 hidden>TodoMatic</h1>
@@ -37,12 +32,12 @@ function App(props) {
         <FilterButton />
         <FilterButton />
       </div>
-      <h2 id="list-heading">3 tasks remaining</h2>
+      <h2 id="list-heading">{headingText}</h2>
       <ul
         role="list"
         className="todo-list stack-large stack-exception"
         aria-labelledby="list-heading">
-        {taskList}
+          {taskList}
       </ul>
       <button type="button" onClick={() => alert('still something to prove')}>Hi all</button>
     </div>
